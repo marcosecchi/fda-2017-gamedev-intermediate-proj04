@@ -80,6 +80,6 @@ public class SniperController : MonoBehaviour {
 		Gizmos.DrawRay(sniperEyes.position, _currentTargetPoint.position - sniperEyes.position);
 		// Disegno un raggio dagli occhi dello sniper in avanti
 		Gizmos.color = Color.cyan;
-		Gizmos.DrawRay (sniperEyes.position, transform.forward);
+		Gizmos.DrawRay (sniperEyes.position, sniperEyes.transform.forward);
 	}
 }
