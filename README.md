@@ -5,14 +5,17 @@
 
 *Docente: [Marco Secchi](http://marcosecchi.it)*
 
-## Progetto 4 - Integrazione Unity/Ink
+## Progetto 4 - AI
 
 3D FPS/Third person
 
 ## Argomenti Trattati
 
-[TBD]
+* (Navigation System)[https://docs.unity3d.com/Manual/nav-NavigationSystem.html]
+* (Gizmos)[https://docs.unity3d.com/ScriptReference/Gizmos.html]
+* (Skybox)[https://docs.unity3d.com/Manual/class-Skybox.html]
 
 ### Link Utili
 
-[TBD]
+* [Skybox Collection](http://www.custommapmakers.org/skyboxes.php)
+* [Spacescape](http://alexcpeterson.com/spacescape/)
