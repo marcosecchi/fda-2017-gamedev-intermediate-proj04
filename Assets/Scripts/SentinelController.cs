@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
+[RequireComponent(typeof(Animator))]
 public class SentinelController : MonoBehaviour {
 
 	public Transform target;
@@ -13,12 +14,16 @@ public class SentinelController : MonoBehaviour {
 
 	Plane[] _planes;
 
+	Animator _animator;
+
 	bool _targetInLOS;
 
 	public SentinelCameraAIScriptableObject data;
 
 	// Use this for initialization
 	void Start () {
+		_animator = GetComponent<Animator> ();
+
 		_camera = GetComponent<Camera> ();
 		_planes = GeometryUtility.CalculateFrustumPlanes (_camera);
 
@@ -31,8 +36,13 @@ public class SentinelController : MonoBehaviour {
 	void Update () {
 		_targetInLOS = GeometryUtility.TestPlanesAABB (_planes, _targetCollider.bounds);
 		if (_targetInLOS) {
-			transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.LookRotation (target.position), Time.deltaTime * data._rotationSpeed);
-		}	
+			_animator.SetBool ("TargetInLOS", true);
+			if (_animator.GetBool("Seeking")) {
+				transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.LookRotation (target.position), Time.deltaTime * data.rotationSpeed);			
+			}
+		} else {
+			_animator.SetBool ("TargetInLOS", false);
+		}
 	}
 
 	void OnDrawGizmos() {
