@@ -13,6 +13,4 @@ public class SentinelCameraAIScriptableObject : ScriptableObject {
 
 	public float toAlertMultiplier = 1.5f;
 
-	public float alertGuardsLevel = 10f;
-
 }
