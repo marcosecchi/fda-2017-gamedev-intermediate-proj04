@@ -31,7 +31,7 @@ public class SentinelController : MonoBehaviour {
 		_targetInLOS = GeometryUtility.TestPlanesAABB (_planes, _targetCollider.bounds);
 
 		if (_targetInLOS) {
-			transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.LookRotation (target.position - transform.position), Time.deltaTime);
+			transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.LookRotation (target.position - transform.position), Time.deltaTime * data.rotationSpeed);
 			Debug.Log ("InLOS");
 		}
 			
