@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Behaviour del sentinel in stato "Alert"
 public class SentinelAlertBehaviour : SentinelBehaviour {
 
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state

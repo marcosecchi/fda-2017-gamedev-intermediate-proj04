@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Behaviour che permette di immagazzinare i dati per il
+// comportamento del sentinel
 public class SentinelBehaviour : StateMachineBehaviour {
 
 	protected SentinelAIScriptableObject _d;

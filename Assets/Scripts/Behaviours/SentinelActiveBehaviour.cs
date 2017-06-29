@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Behaviour del sentinel in stato "Active"
 public class SentinelActiveBehaviour : SentinelBehaviour {
 
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
 		Debug.Log ("Active");
+		// Non alla ricerca del target
 		animator.SetBool ("Seeking", true);
 	}
 
