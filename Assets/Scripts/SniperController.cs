@@ -5,6 +5,8 @@ using UnityEngine;
 // Il controller dello sniper
 public class SniperController : MonoBehaviour {
 
+	public SniperAIScriptableObject data;
+
 	// Il bersaglio dello sniper
 	public Transform target;
 
@@ -51,7 +53,7 @@ public class SniperController : MonoBehaviour {
 		RaycastHit hit;
 		_targetInLOS = false;
 		// Traccio un raycast dagli occhi del cecchino, in direzione del bersaglio selezionato
-		bool rayCast = Physics.Raycast (sniperEyes.position, _currentTargetPoint.position - sniperEyes.position, out hit, 30f);
+		bool rayCast = Physics.Raycast (sniperEyes.position, _currentTargetPoint.position - sniperEyes.position, out hit, data.weaponRange);
 		if (rayCast) {
 			// Se l'elemento colpito è taggato "Player", setto a "true"
 			// la flag
@@ -76,8 +78,20 @@ public class SniperController : MonoBehaviour {
 		if (target == null)
 			return;
 		// Disegno un raggio dagli occhi dello sniper al bersaglio selezionato
-		Gizmos.color = Color.red;
-		Gizmos.DrawRay(sniperEyes.position, _currentTargetPoint.position - sniperEyes.position);
+
+		Gizmos.color = new Color(1f, 1f, 1f, .5f);
+		Gizmos.DrawRay(sniperEyes.position, (_currentTargetPoint.position - sniperEyes.position) );
+
+		if (_targetInLOS)
+			Gizmos.color = Color.red;
+		else
+			Gizmos.color = new Color (1f, 0, 0, .4f);
+		
+		float distance = data.weaponRange / Vector3.Distance (sniperEyes.position, _currentTargetPoint.position);
+		Gizmos.DrawRay(sniperEyes.position, (_currentTargetPoint.position - sniperEyes.position) * distance );
+
+
+//		float distance = 
 		// Disegno un raggio dagli occhi dello sniper in avanti
 		Gizmos.color = Color.cyan;
 		Gizmos.DrawRay (sniperEyes.position, sniperEyes.transform.forward);
