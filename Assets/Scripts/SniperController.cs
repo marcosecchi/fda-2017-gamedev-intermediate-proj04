@@ -5,6 +5,8 @@ using UnityEngine;
 // Il controller dello sniper
 public class SniperController : MonoBehaviour {
 
+	public SniperAIScriptableObject data;
+
 	// Il bersaglio dello sniper
 	public Transform target;
 
@@ -51,15 +53,27 @@ public class SniperController : MonoBehaviour {
 		RaycastHit hit;
 		_targetInLOS = false;
 		// Traccio un raycast dagli occhi del cecchino, in direzione del bersaglio selezionato
-		bool rayCast = Physics.Raycast (sniperEyes.position, _currentTargetPoint.position - sniperEyes.position, out hit, 30f);
+		bool rayCast = Physics.Raycast (sniperEyes.position, _currentTargetPoint.position - sniperEyes.position, out hit, data.weaponRange);
 		if (rayCast) {
 			// Se l'elemento colpito è taggato "Player", setto a "true"
 			// la flag
 			if (hit.transform.gameObject.tag == "Player") {
 				Debug.Log ("Target Acquired");
 				_targetInLOS = true;
+
+//				float losAngle = Vector3.Angle (sniperEyes.forward, _currentTargetPoint.position - sniperEyes.position);
+//				if (losAngle > data.losAngle)
+//					_targetInLOS = false;
+//				Debug.Log (losAngle + " - " + data.losAngle);
+//				Debug.Log (">>>" + (losAngle - data.losAngle));
 			}
 		}
+
+		float distance = Vector3.Distance (sniperEyes.position, _currentTargetPoint.position);
+		if (distance > data.weaponRange)
+			_targetInLOS = false;
+
+
 		// Se non è stato possibile raggiungere il bersaglio,
 		// lo cambio
 		if (!_targetInLOS)
@@ -73,13 +87,25 @@ public class SniperController : MonoBehaviour {
 	}
 
 	void OnDrawGizmos() {
-		if (target == null)
+		if (_currentTargetPoint == null || sniperEyes == null)
 			return;
-		// Disegno un raggio dagli occhi dello sniper al bersaglio selezionato
-		Gizmos.color = Color.red;
-		Gizmos.DrawRay(sniperEyes.position, _currentTargetPoint.position - sniperEyes.position);
+
+		// Disegno un raggio dagli occhi dello sniper al bersaglio da acquisire
+		Gizmos.color = new Color(1f, 1f, 1f, .5f);
+		Vector3 direction = _currentTargetPoint.position - sniperEyes.position;
+		Gizmos.DrawRay(sniperEyes.position, direction);
+
+		// Disegno la distanza massima dell'arma dello sniper
+		float distance = data.weaponRange / Vector3.Distance (sniperEyes.position, _currentTargetPoint.position);
+		if (!_targetInLOS)
+			Gizmos.color = new Color(1f, 0, 0, .4f);
+		else
+			Gizmos.color = Color.red;
+		Gizmos.DrawRay(sniperEyes.position, direction * distance);
+
+
 		// Disegno un raggio dagli occhi dello sniper in avanti
 		Gizmos.color = Color.cyan;
-		Gizmos.DrawRay (sniperEyes.position, sniperEyes.transform.forward);
+		Gizmos.DrawRay (sniperEyes.position, sniperEyes.forward);
 	}
 }
