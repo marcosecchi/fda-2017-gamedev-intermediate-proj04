@@ -23,7 +23,11 @@ public class SentinelController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_animator = GetComponent<Animator> ();
-
+		SentinelBehaviour[] behaviours = _animator.GetBehaviours<SentinelBehaviour> ();
+		foreach (SentinelBehaviour behaviour in behaviours) {
+			behaviour.Data = data;
+		}
+			
 		_camera = GetComponent<Camera> ();
 		_planes = GeometryUtility.CalculateFrustumPlanes (_camera);
 
@@ -42,6 +46,12 @@ public class SentinelController : MonoBehaviour {
 			}
 		} else {
 			_animator.SetBool ("TargetInLOS", false);
+		}
+
+		if (_animator.GetBool ("AlertGuards")) {
+			// TODO Spawn guards
+			_animator.SetBool ("AlertGuards", false);
+			Debug.Log ("WARNING: Call Guards");
 		}
 	}
 
