@@ -7,6 +7,8 @@ public class SentinelAIScriptableObject : ScriptableObject {
 
 	public float rotationSpeed = .02f;
 
+	public float targetAcquireRatio = .5f;
+
 	public float toIdleMultiplier = 1.0f;
 
 	public float toActiveMultiplier = 1.0f;

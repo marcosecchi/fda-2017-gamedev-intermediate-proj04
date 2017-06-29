@@ -27,6 +27,9 @@ public class SentinelController : MonoBehaviour {
 	// L'animator utilizzato come macchina a stati finiti della AI
 	Animator _animator;
 
+	// L'elenco dei possibili bersagli sul personaggio
+	private List<Transform> _targetPoints;
+
 	void Start () {
 		// Recupera la camera
 		_camera = GetComponent<Camera> ();
@@ -46,6 +49,22 @@ public class SentinelController : MonoBehaviour {
 
 		// Recupera il collider del bersaglio
 		_targetCollider = target.GetComponent<Collider> ();
+
+		// Inizializzo la lista dei bersagli
+		_targetPoints = new List<Transform> ();
+
+		// Recupero tutti i gameobjects taggati "PlayerTarget"
+		// all'interno del bersaglio
+		Transform[] list = target.GetComponentsInChildren<Transform> ();
+		foreach (Transform t in list) {
+			if (t.gameObject.tag == "PlayerTarget")
+				_targetPoints.Add (t);
+		}
+		// Se non è stato trovato nessun elemento taggato,
+		// aggiungo il bersaglio, in modo da averne almeno uno
+		if (_targetPoints.Count == 0)
+			_targetPoints.Add (target);
+		
 	}
 	
 	void Update () {
@@ -55,13 +74,17 @@ public class SentinelController : MonoBehaviour {
 		// Controlla che il bersaglio sia all'interno del frustum (cioè renderizzato dalla camera)
 		_targetInLOS = GeometryUtility.TestPlanesAABB (_planes, _targetCollider.bounds);
 		if (_targetInLOS) {
-			RaycastHit hit;
-			bool rayCast = Physics.Raycast (transform.position, target.position - transform.position, out hit, _camera.farClipPlane * 2);
-			if (rayCast) {
-				// Controllo che l'elemento colpito sia taggato "Player"
-				Debug.Log(hit.transform.gameObject);
-				_targetInLOS = hit.transform.gameObject.tag == "Player";
+			int targetsCount = 0;
+			foreach (Transform tp in _targetPoints) {
+				RaycastHit hit;
+				bool rayCast = Physics.Raycast (transform.position, tp.position - transform.position, out hit, Mathf.Infinity);
+				if (rayCast && hit.transform.gameObject.tag == "Player") {
+					targetsCount++;
+				}
 			}
+			Debug.Log (targetsCount);
+			if(((float)targetsCount / (float)_targetPoints.Count) < data.targetAcquireRatio)
+				_targetInLOS = false;
 		}
 
 		// Se il target è in linea di vista,
@@ -90,10 +113,26 @@ public class SentinelController : MonoBehaviour {
 		Gizmos.DrawFrustum (Vector3.zero, _camera.fieldOfView, _camera.farClipPlane, _camera.nearClipPlane, _camera.aspect);
 		Gizmos.matrix = temp;
 
-		if (_targetInLOS) {
-			Gizmos.color = Color.red;
-			Gizmos.DrawRay(transform.position, (target.position - transform.position) );
+//		if (_targetInLOS) {
+//			Gizmos.color = Color.red;
+//			Gizmos.DrawRay(transform.position, (target.position - transform.position) );
+//		}
+
+		int targetsCount = 0;
+
+		foreach (Transform tp in _targetPoints) {
+			Gizmos.color = new Color (1f, 0, 0, .4f);
+			RaycastHit hit;
+			bool rayCast = Physics.Raycast (transform.position, tp.position - transform.position, out hit, Mathf.Infinity);
+			Debug.Log (hit.transform.gameObject);
+			if (rayCast && hit.transform.gameObject.tag == "Player") {
+				Gizmos.color = Color.red;
+				targetsCount++;
+			}
+			Gizmos.DrawRay(transform.position, (tp.position - transform.position) );
 		}
+
+		Debug.Log ("---" + targetsCount);
 
 	}
 }
