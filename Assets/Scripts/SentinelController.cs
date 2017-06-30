@@ -73,7 +73,10 @@ public class SentinelController : MonoBehaviour {
 
 		// Controlla che il bersaglio sia all'interno del frustum (cioè renderizzato dalla camera)
 		_targetInLOS = GeometryUtility.TestPlanesAABB (_planes, _targetCollider.bounds);
-		if (_targetInLOS) {
+
+		// Controllo se vengono acquisiti abbastanza target points
+		// (solo nel caso che lo scriptable object mi indichi che vanno utilizzati)
+		if (_targetInLOS && data.useTargetPoints) {
 			int targetsCount = 0;
 			foreach (Transform tp in _targetPoints) {
 				RaycastHit hit;
@@ -82,8 +85,8 @@ public class SentinelController : MonoBehaviour {
 					targetsCount++;
 				}
 			}
-			Debug.Log (targetsCount);
-			if(((float)targetsCount / (float)_targetPoints.Count) < data.targetAcquireRatio)
+			// Se il numero di target points non è sufficiente, il bersaglio non è stato individuato
+			if(((float)targetsCount / (float)_targetPoints.Count) < data.targetPointsAcquireRatio)
 				_targetInLOS = false;
 		}
 
@@ -110,29 +113,26 @@ public class SentinelController : MonoBehaviour {
 		else
 			Gizmos.color = Color.magenta;
 
+		// Disegno il frustum della camera, in modo tale che sia sempre visibile
 		Gizmos.DrawFrustum (Vector3.zero, _camera.fieldOfView, _camera.farClipPlane, _camera.nearClipPlane, _camera.aspect);
 		Gizmos.matrix = temp;
 
-//		if (_targetInLOS) {
-//			Gizmos.color = Color.red;
-//			Gizmos.DrawRay(transform.position, (target.position - transform.position) );
-//		}
+		// Disegno i raggi dalla camera ai target points
+		// (solo nel caso che lo scriptable object mi indichi che vanno utilizzati)
+		if (data.useTargetPoints) {
+			int targetsCount = 0;
 
-		int targetsCount = 0;
-
-		foreach (Transform tp in _targetPoints) {
-			Gizmos.color = new Color (1f, 0, 0, .4f);
-			RaycastHit hit;
-			bool rayCast = Physics.Raycast (transform.position, tp.position - transform.position, out hit, Mathf.Infinity);
-			Debug.Log (hit.transform.gameObject);
-			if (rayCast && hit.transform.gameObject.tag == "Player") {
-				Gizmos.color = Color.red;
-				targetsCount++;
+			foreach (Transform tp in _targetPoints) {
+				Gizmos.color = new Color (1f, 0, 0, .4f);
+				RaycastHit hit;
+				bool rayCast = Physics.Raycast (transform.position, tp.position - transform.position, out hit, Mathf.Infinity);
+				if (rayCast && hit.transform.gameObject.tag == "Player") {
+					Gizmos.color = Color.red;
+					targetsCount++;
+				}
+				Gizmos.DrawRay(transform.position, (tp.position - transform.position) );
 			}
-			Gizmos.DrawRay(transform.position, (tp.position - transform.position) );
 		}
-
-		Debug.Log ("---" + targetsCount);
 
 	}
 }
