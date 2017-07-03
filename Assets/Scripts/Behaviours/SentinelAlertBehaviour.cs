@@ -11,9 +11,12 @@ public class SentinelAlertBehaviour : SentinelBehaviour {
 	}
 
 	// OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-	//override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-	//
-	//}
+	override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
+		if (!animator.GetBool (G.TARGET_IN_LOS)) {
+			float newVal = animator.GetFloat (G.ALERT_LEVEL) - Time.deltaTime * Data.downToIdleMultiplier;
+			animator.SetFloat (G.ALERT_LEVEL, newVal);
+		}
+	}
 
 	// OnStateExit is called when a transition ends and the state machine finishes evaluating this state
 	//override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

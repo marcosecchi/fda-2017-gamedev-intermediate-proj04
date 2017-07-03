@@ -17,11 +17,11 @@ public class SentinelAIScriptableObject : ScriptableObject {
 	// BEHAVIOURS
 
 	// Modificatore al tempo per arrivare allo statio 'Idle'
-	public float toIdleMultiplier = 1.0f;
+	public float downToIdleMultiplier = 1.0f;
 
 	// Modificatore al tempo per arrivare allo statio 'Active'
-	public float toActiveMultiplier = 1.0f;
+	public float upToActiveMultiplier = 1.0f;
 
 	// Modificatore al tempo per arrivare allo statio 'Alert'
-	public float toAlertMultiplier = 1.5f;
+	public float upToAlertMultiplier = 1.5f;
 }

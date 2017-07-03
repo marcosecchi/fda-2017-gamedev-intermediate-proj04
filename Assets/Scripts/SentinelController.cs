@@ -92,10 +92,12 @@ public class SentinelController : MonoBehaviour {
 
 		// Se il target è in linea di vista,
 		// muove la camera per centrarlo su di esso
-		if (_targetInLOS) {
+		if (_targetInLOS && _animator.GetBool(G.SEEKING)) {
 			transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.LookRotation (target.position - transform.position), Time.deltaTime * data.rotationSpeed);
-			Debug.Log ("InLOS");
 		}
+	//	if(_animator.GetBool(G.TARGET_IN_LOS) != _targetInLOS)
+			_animator.SetBool (G.TARGET_IN_LOS, _targetInLOS);
+
 			
 	}
 
