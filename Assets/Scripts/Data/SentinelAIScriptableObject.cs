@@ -14,6 +14,8 @@ public class SentinelAIScriptableObject : ScriptableObject {
 	// Percentuale di target points necessari per acquisire il bersaglio
 	public float targetPointsAcquireRatio = .5f;
 
+	public GuardType guardType;
+
 	// BEHAVIOURS
 
 	// Modificatore al tempo per arrivare allo statio 'Idle'
@@ -24,4 +26,9 @@ public class SentinelAIScriptableObject : ScriptableObject {
 
 	// Modificatore al tempo per arrivare allo statio 'Alert'
 	public float upToAlertMultiplier = 1.5f;
+}
+
+public enum GuardType {
+	Infantry,
+	Sniper
 }

@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class SentinelController : MonoBehaviour {
 
+
 	// Il bersaglio del sentinel
 	public Transform target;
 
@@ -98,7 +99,14 @@ public class SentinelController : MonoBehaviour {
 	//	if(_animator.GetBool(G.TARGET_IN_LOS) != _targetInLOS)
 			_animator.SetBool (G.TARGET_IN_LOS, _targetInLOS);
 
-			
+
+		if(_animator.GetBool(G.ALERT_GUARDS)) {
+			_animator.SetBool (G.ALERT_GUARDS, false);
+			if(data.guardType == GuardType.Infantry && EventManager.OnInfantryAlerted != null)
+				EventManager.OnInfantryAlerted ();
+			else if (data.guardType == GuardType.Sniper && EventManager.OnSniperAlerted != null)
+				EventManager.OnSniperAlerted ();
+		}
 	}
 
 	void OnDrawGizmos() {

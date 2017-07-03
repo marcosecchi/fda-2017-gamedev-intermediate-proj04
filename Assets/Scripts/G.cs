@@ -7,5 +7,6 @@ public class G {
 	public const string TARGET_IN_LOS = "TargetInLOS";
 	public const string SEEKING = "Seeking";
 	public const string ALERT_LEVEL = "AlertLevel";
+	public const string ALERT_GUARDS = "AlertGuards";
 
 }
