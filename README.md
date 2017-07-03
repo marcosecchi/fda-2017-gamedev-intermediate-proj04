@@ -17,6 +17,10 @@
 * [Quaternion.Lerp](https://docs.unity3d.com/ScriptReference/Quaternion.Lerp.html)
 * Calcolare i piani di un frustum con [CalculateFrustumPlanes](https://docs.unity3d.com/ScriptReference/GeometryUtility.CalculateFrustumPlanes.html)
 * Controllare se un oggetto si trova all'interno del frustum di una Camera tramite [TestPlanesAABB](https://docs.unity3d.com/ScriptReference/GeometryUtility.TestPlanesAABB.html)
+* [Animator Controller](https://docs.unity3d.com/Manual/class-AnimatorController.html)
+* [Delegates](https://unity3d.com/learn/tutorials/topics/scripting/delegates)
+* [State Machines](https://docs.unity3d.com/Manual/StateMachineTransitions.html)
+* [Animation State Machines](https://docs.unity3d.com/Manual/StateMachineTransitions.html)
 
 
 ### Link Utili
